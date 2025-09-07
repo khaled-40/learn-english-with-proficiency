@@ -15,7 +15,7 @@ const displayData = (lessons) => {
     lessons.forEach((lesson) => {
         const div = document.createElement('div');
         div.innerHTML = `
-    <button id = "btn-${lesson.level_no}" onclick = "fetchWords(${lesson.level_no})" class=" btn btn-outline btn-primary"><i class="fa-solid fa-book"></i>Lesson - ${lesson.level_no}</button>
+    <button id = "btn-${lesson.level_no}" onclick = "fetchWords(${lesson.level_no})" class=" btn btn-outline btn-primary lesson-btns"><i class="fa-solid fa-book"></i>Lesson - ${lesson.level_no}</button>
     `
         lessonContainer.appendChild(div)
     });
@@ -23,14 +23,16 @@ const displayData = (lessons) => {
 }
 // fetch the data of the cards 
 const fetchWords = (level) => {
-    const unmark = document.getElementsByClassName('btns');
+    const unmark = document.querySelectorAll('.lesson-btns');
+    unmark.forEach((remove => {
+        remove.classList.remove('active')
+    }))
     const markLesson = document.getElementById(`btn-${level}`);
     markLesson.classList.add('active');
-    console.log(markLesson)
     const url = `https://openapi.programming-hero.com/api/level/${level}`;
     fetch(url)
         .then(res => res.json())
-        .then(data => loadWordCards(data.data))
+        .then(data => loadWordCards((data.data)))
 }
 
 // Load The word card on clicking the lesson buttons 
