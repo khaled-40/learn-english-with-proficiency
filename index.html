@@ -90,13 +90,31 @@
 
         </div>
 
-        <div id="words-container" class="bg-gray-100 w-11/12 mx-auto rounded-xl p-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div id="words-container"
+            class="bg-gray-100 w-11/12 mx-auto rounded-xl p-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             <div class="text-center py-16 md:col-span-2 xl:col-span-3">
                 <p class="font-bangla mb-8">আপনি এখনো কোন Lesson Select করেন নি</p>
                 <h3 class="text-3xl font-bold">একটি Lesson Select করুন।</h3>
             </div>
         </div>
     </section>
+
+    <!-- Show modal on clicking the info button of the word cards  -->
+
+    <!-- Open the modal using ID.showModal() method -->
+    <dialog id="word_details" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <div id="detail-box" class="space-y-5">
+                
+            </div>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </dialog>
 
 
 
