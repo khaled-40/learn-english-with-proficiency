@@ -23,6 +23,7 @@ const displayData = (lessons) => {
 }
 // fetch the data of the cards 
 const fetchWords = (level) => {
+    manageSpinner(true)
     const unmark = document.querySelectorAll('.lesson-btns');
     unmark.forEach((remove => {
         remove.classList.remove('active')
@@ -47,6 +48,8 @@ const loadWordCards = (cards) => {
         <h3 class="text-3xl font-bold">নেক্সট Lesson এ যান</h3>
         </div>
         `
+        manageSpinner(false);
+        return;
     }
     cards.forEach((element) => {
         const card = document.createElement('div');
@@ -62,6 +65,8 @@ const loadWordCards = (cards) => {
             </div>
     `
         wordsContainer.appendChild(card)
+        manageSpinner(false);
+        return;
     })
 }
 
@@ -89,12 +94,35 @@ const loadWordDetails = (details) => {
                 </div>
                 <div>
                     <h3 class="font-medium font-bangla text-2xl">সমার্থক শব্দ গুলো</h3>
-                    <span class="btn">btn-1</span>
-                    <span class="btn">btn-2</span>
-                    <span class="btn">btn-3</span>
+                    <div class = "">${createElement(details.synonyms)}</div>
                 </div>
     `;
     
     document.getElementById('word_details').showModal();
+    
 
 }
+// Adding synonym dynamically 
+const createElement = (array) => {
+    const synonym = array.map(el =>` <span class="btn">${el}</span>`);
+    return synonym.join(" ")
+}
+
+// managing spinner 
+
+const manageSpinner = (status) => {
+    if(status == true) {
+        document.getElementById("spinner").classList.remove("hidden");
+        document.getElementById("words-container").classList.add("hidden");
+    }
+    else {
+        document.getElementById("spinner").classList.add("hidden");
+        document.getElementById("words-container").classList.remove("hidden");
+    }
+}
+
+// Search Words funtionality 
+
+document.getElementById("btn-search").addEventListener('click', () => {
+    const input = document.getElementById("input-search")
+})

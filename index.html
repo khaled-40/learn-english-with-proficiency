@@ -90,6 +90,22 @@
 
         </div>
 
+        <!-- Search Option  -->
+        <div class="flex justify-center">
+            <div class="join">
+                <div>
+                    <label class="input validator join-item">
+                        <input id="input-search" type="text" placeholder="Search Vocabularie Now" required />
+                    </label>
+                </div>
+                <button id="btn-search" class="btn btn-primary join-item">Search</button>
+            </div>
+        </div>
+        <!-- spinner integration -->
+        <div class="flex justify-center items-center py-10 "><span id="spinner"
+                class="loading loading-bars loading-xl hidden"></span></div>
+
+        <!-- Words Container  -->
         <div id="words-container"
             class="bg-gray-100 w-11/12 mx-auto rounded-xl p-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             <div class="text-center py-16 md:col-span-2 xl:col-span-3">
@@ -105,7 +121,7 @@
     <dialog id="word_details" class="modal modal-bottom sm:modal-middle">
         <div class="modal-box">
             <div id="detail-box" class="space-y-5">
-                
+
             </div>
             <div class="modal-action">
                 <form method="dialog">
