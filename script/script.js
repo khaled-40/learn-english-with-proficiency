@@ -55,12 +55,12 @@ const loadWordCards = (cards) => {
         const card = document.createElement('div');
         card.innerHTML = `
         <div class="bg-white space-y-5 text-center py-10 rounded-xl">
-                <h3 class="text-2xl font-bold">${element.word? element.word : 'শব্দ পাওয়া যায় নি'}</h3>
+                <h3 class="text-2xl font-bold">${element.word ? element.word : 'শব্দ পাওয়া যায় নি'}</h3>
                 <p class="font-normal">Meaning / Pronunciation</p>
-                <div class="text-2xl font-bangla font-semibold text-[#18181B]">${element.meaning? element.meaning:'(অর্থ পাওয়া যায় নি)!!'} / ${element.pronunciation? element.pronunciation: 'উচ্চারণ পাওয়া যায় নি'}</div>
+                <div class="text-2xl font-bangla font-semibold text-[#18181B]">${element.meaning ? element.meaning : '(অর্থ পাওয়া যায় নি)!!'} / ${element.pronunciation ? element.pronunciation : 'উচ্চারণ পাওয়া যায় নি'}</div>
                 <div class="flex justify-between items-center px-10">
                     <button onclick="fetchWordDetails(${element.id})" class="bg-[#1A91FF10] rounded-lg p-2 hover:bg-[#1A91FF80]"><i class="fa-solid fa-circle-info"></i></button>
-                    <button class="bg-[#1A91FF10] rounded-lg p-2 hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
+                    <button onclick="pronounceWord('${element.word}')" class="bg-[#1A91FF10] rounded-lg p-2 hover:bg-[#1A91FF80]"><i class="fa-solid fa-volume-high"></i></button>
                 </div>
             </div>
     `
@@ -71,7 +71,7 @@ const loadWordCards = (cards) => {
 }
 
 // fetch the word details 
-const fetchWordDetails =async(id) => {
+const fetchWordDetails = async (id) => {
     const url = `https://openapi.programming-hero.com/api/word/${id}`
     const res = await fetch(url);
     const details = await res.json();
@@ -81,37 +81,37 @@ const fetchWordDetails =async(id) => {
 // Show word details as Modal 
 const loadWordDetails = (details) => {
     const detailBox = document.getElementById('detail-box');
-    
+
     detailBox.innerHTML = `
-    <h3 class="font-bold text-3xl">${details.word? details.word : 'শব্দ পাওয়া যায় নি'} ( <i class="fa-solid fa-microphone"></i>  :${details.pronunciation? details.pronunciation: 'উচ্চারণ পাওয়া যায় নি'})</h3>
+    <h3 class="font-bold text-3xl">${details.word ? details.word : 'শব্দ পাওয়া যায় নি'} ( <i class="fa-solid fa-microphone"></i>  :${details.pronunciation ? details.pronunciation : 'উচ্চারণ পাওয়া যায় নি'})</h3>
                 <div>
                     <h3 class="font-semibold text-2xl">Meaning</h3>
-                    <p>${details.meaning? details.meaning: 'অর্থ পাওয়া যায় নি'}</p>
+                    <p>${details.meaning ? details.meaning : 'অর্থ পাওয়া যায় নি'}</p>
                 </div>
                 <div>
                     <h3 class="font-semibold text-2xl">Example</h3>
-                    <p>${details.sentence? details.sentence : 'বাক্য পাওয়া যায় নি'}</p>
+                    <p>${details.sentence ? details.sentence : 'বাক্য পাওয়া যায় নি'}</p>
                 </div>
                 <div>
                     <h3 class="font-medium font-bangla text-2xl">সমার্থক শব্দ গুলো</h3>
                     <div class = "">${createElement(details.synonyms)}</div>
                 </div>
     `;
-    
+
     document.getElementById('word_details').showModal();
-    
+
 
 }
 // Adding synonym dynamically 
 const createElement = (array) => {
-    const synonym = array.map(el =>` <span class="btn">${el}</span>`);
+    const synonym = array.map(el => ` <span class="btn">${el}</span>`);
     return synonym.join(" ")
 }
 
 // managing spinner 
 
 const manageSpinner = (status) => {
-    if(status == true) {
+    if (status == true) {
         document.getElementById("spinner").classList.remove("hidden");
         document.getElementById("words-container").classList.add("hidden");
     }
@@ -124,5 +124,25 @@ const manageSpinner = (status) => {
 // Search Words funtionality 
 
 document.getElementById("btn-search").addEventListener('click', () => {
-    const input = document.getElementById("input-search")
+    const unmark = document.querySelectorAll('.lesson-btns');
+    unmark.forEach((remove => {
+        remove.classList.remove('active')
+    }))
+    const input = document.getElementById("input-search").value.trim().toLowerCase();
+    console.log(input)
+
+    fetch("https://openapi.programming-hero.com/api/words/all")
+        .then(res => res.json())
+        .then((data) => {
+            const allWords = data.data;
+            const filterWords = allWords.filter(word => word.word.toLowerCase().includes(input));
+            loadWordCards(filterWords)
+        })
 })
+
+// Pronounce Word Function 
+function pronounceWord(word) {
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = "en-EN"; // English
+  window.speechSynthesis.speak(utterance);
+}
